@@ -1,0 +1,218 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: "Bud-get - AWS integrated personal finance tool"
+
+Globals:
+    Function:
+        Timeout: 5
+        MemorySize: 128
+        Runtime: python3.10
+
+Resources:
+    BudGetApi:
+        Type: AWS::Serverless::Api
+        Properties:
+            StageName: api
+    BudGetFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+            Handler: app.lambda_handler
+            CodeUri: bud-get
+            Description: "Bud-get Lambda"
+            Architectures:
+                - x86_64
+            Policies: AmazonDynamoDBFullAccess
+            Events:
+                Health:
+                    Type: Api
+                    Properties:
+                        Path: /
+                        Method: GET
+                        RestApiId:
+                            Ref: BudGetApi
+                GetTransaction:
+                    Type: Api
+                    Properties:
+                        Path: /transaction
+                        Method: GET
+                        RestApiId:
+                            Ref: BudGetApi
+                CreateTransaction:
+                    Type: Api
+                    Properties:
+                        Path: /transaction
+                        Method: POST
+                        RestApiId:
+                            Ref: BudGetApi
+                UpdateTransaction:
+                    Type: Api
+                    Properties:
+                        Path: /transaction
+                        Method: PUT
+                        RestApiId:
+                            Ref: BudGetApi
+                DeleteTransaction:
+                    Type: Api
+                    Properties:
+                        Path: /transaction
+                        Method: DELETE
+                        RestApiId:
+                            Ref: BudGetApi
+                GetAllTransactions:
+                    Type: Api
+                    Properties:
+                        Path: /transactions
+                        Method: GET
+                        RestApiId:
+                            Ref: BudGetApi
+                LoadTransactions:
+                    Type: Api
+                    Properties:
+                        Path: /transactions
+                        Method: POST
+                        RestApiId:
+                            Ref: BudGetApi
+            Environment:
+                Variables:
+                    POWERTOOLS_SERVICE_NAME: PowertoolsBudGet
+                    POWERTOOLS_METRICS_NAMESPACE: Powertools
+                    LOG_LEVEL: INFO
+            Tags:
+                LambdaPowertools: python
+            Environment:
+                Variables:
+                    TransactionsTable: !Ref AllTransactions
+                    AccountsTable: !Ref Accounts
+                    BalanceHistoryTable: !Ref BalanceHistory
+                    MonthlyBudgetTable: !Ref MonthlyBudget
+                    RecurringTransactionsTable: !Ref RecurringTransactions
+                    HolidaysTable: !Ref Holidays
+                    ConfigTable: !Ref Config
+    AllTransactions:
+        Type: AWS::DynamoDB::Table
+        Properties:
+            TableName: "all_transactions"
+            AttributeDefinitions:
+                - 
+                  AttributeName: "ref_date"
+                  AttributeType: "S"
+                - 
+                  AttributeName: "index"
+                  AttributeType: "N"
+            KeySchema:
+                - 
+                  AttributeName: "ref_date"
+                  KeyType: "HASH"
+                - 
+                  AttributeName: "index"
+                  KeyType: "RANGE"
+            BillingMode: PAY_PER_REQUEST
+    Accounts:
+        Type: AWS::DynamoDB::Table
+        Properties:
+            TableName: "accounts"
+            AttributeDefinitions:
+                - 
+                  AttributeName: "account_id"
+                  AttributeType: "S"
+            KeySchema:
+                - 
+                  AttributeName: "account_id"
+                  KeyType: "HASH"
+            BillingMode: PAY_PER_REQUEST
+    BalanceHistory:
+        Type: AWS::DynamoDB::Table
+        Properties:
+            TableName: "balance_history"
+            AttributeDefinitions:
+                - 
+                  AttributeName: "ref_date"
+                  AttributeType: "S"
+            KeySchema:
+                - 
+                  AttributeName: "ref_date"
+                  KeyType: "HASH"
+            BillingMode: PAY_PER_REQUEST
+    MonthlyBudget:
+        Type: AWS::DynamoDB::Table
+        Properties:
+            TableName: "monthly_budget"
+            AttributeDefinitions:
+                - 
+                  AttributeName: "ref_date"
+                  AttributeType: "S"
+            KeySchema:
+                - 
+                  AttributeName: "ref_date"
+                  KeyType: "HASH"
+            BillingMode: PAY_PER_REQUEST
+    RecurringTransactions:
+        Type: AWS::DynamoDB::Table
+        Properties:
+            TableName: "recurring_transactions"
+            AttributeDefinitions:
+                - 
+                  AttributeName: "id"
+                  AttributeType: "S"
+            KeySchema:
+                - 
+                  AttributeName: "id"
+                  KeyType: "HASH"
+            BillingMode: PAY_PER_REQUEST
+    Holidays:
+        Type: AWS::DynamoDB::Table
+        Properties:
+            TableName: "holidays"
+            AttributeDefinitions:
+                - 
+                  AttributeName: "date"
+                  AttributeType: "S"
+            KeySchema:
+                - 
+                  AttributeName: "date"
+                  KeyType: "HASH"
+            BillingMode: PAY_PER_REQUEST
+    Config:
+        Type: AWS::DynamoDB::Table
+        Properties:
+            TableName: "config"
+            AttributeDefinitions:
+                - 
+                  AttributeName: "config_id"
+                  AttributeType: "S"
+            KeySchema:
+                - 
+                  AttributeName: "config_id"
+                  KeyType: "HASH"
+            BillingMode: PAY_PER_REQUEST
+Outputs:
+    AllTransactionsDynamoDbTable:
+        Value: !Ref AllTransactions
+        Description: "AllTransactions DynamoDb Table"
+
+    AccountsDynamoDbTable:
+        Value: !Ref Accounts
+        Description: "Accounts DynamoDb Table"
+
+    BalanceHistoryDynamoDbTable:
+        Value: !Ref BalanceHistory
+        Description: "BalanceHistory DynamoDb Table"
+      
+    MonthlyBudgetDynamoDbTable:
+        Value: !Ref MonthlyBudget
+        Description: "MonthlyBudget DynamoDb Table"
+
+    RecurringTransactionsDynamoDbTable:
+        Value: !Ref RecurringTransactions
+        Description: "RecurringTransactions DynamoDb Table"
+
+    HolidaysDynamoDbTable:
+        Value: !Ref Holidays
+        Description: "Holidays DynamoDb Table"
+      
+    ConfigDynamoDbTable:
+        Value: !Ref Config
+        Description: "Config DynamoDb Table"
+
+
+
