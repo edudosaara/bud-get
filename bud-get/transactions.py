@@ -27,7 +27,7 @@ def getTransaction(refDate, index):
         logger.exception(f'Error: {e}')
 
 
-def getTransactions(refDate=None):
+def getTransactions(refDate: str=None):
     try:
         if refDate:
             transactionsOnDate = transactionsTable.scan(
@@ -46,7 +46,7 @@ def getTransactions(refDate=None):
         logger.exception(f'Error: {e}')
 
     
-def getNextIndexForRefDate(refDate):
+def getNextIndexForRefDate(refDate: str):
     transactionsOnRefDate = getTransactions(refDate)
     if transactionsOnRefDate is None:
         return 1

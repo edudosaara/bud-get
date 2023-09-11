@@ -1,8 +1,10 @@
+import json
 from aws_lambda_powertools.event_handler import APIGatewayRestResolver
 from aws_lambda_powertools.utilities.typing import LambdaContext
 from aws_lambda_powertools.logging import correlation_paths
 from aws_lambda_powertools import Logger
 from aws_lambda_powertools import Metrics
+from decimal import Decimal
 from transactions import (
     getTransactions,
     getTransaction,
@@ -26,7 +28,7 @@ def transactionsGET():
     
 @app.post("/transactions")
 def transactionsPOST():
-    return loadTransactions(bodys=app.current_event.body)
+    return loadTransactions(json.loads(app.current_event.body, parse_float=Decimal))
 
 @app.get("/transaction")
 def transactionGET():
@@ -37,11 +39,11 @@ def transactionGET():
 
 @app.post("/transaction")
 def transactionPOST():
-    return createTransaction(app.current_event.body)
+    return createTransaction(json.loads(app.current_event.body, parse_float=Decimal))
 
 @app.put("/transaction")
 def transactionPUT():
-    return updateTransaction(app.current_event.body)
+    return updateTransaction(json.loads(app.current_event.body, parse_float=Decimal))
     
 @app.delete("/transaction")
 def transactionDELETE():
