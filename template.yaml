@@ -72,6 +72,216 @@ Resources:
                         Method: POST
                         RestApiId:
                             Ref: BudGetApi
+                GetAccount:
+                    Type: Api
+                    Properties:
+                        Path: /account
+                        Method: GET
+                        RestApiId:
+                            Ref: BudGetApi
+                CreateAccount:
+                    Type: Api
+                    Properties:
+                        Path: /account
+                        Method: POST
+                        RestApiId:
+                            Ref: BudGetApi
+                UpdateAccount:
+                    Type: Api
+                    Properties:
+                        Path: /account
+                        Method: PUT
+                        RestApiId:
+                            Ref: BudGetApi
+                DeleteAccount:
+                    Type: Api
+                    Properties:
+                        Path: /account
+                        Method: DELETE
+                        RestApiId:
+                            Ref: BudGetApi
+                GetAllAccounts:
+                    Type: Api
+                    Properties:
+                        Path: /accounts
+                        Method: GET
+                        RestApiId:
+                            Ref: BudGetApi
+                LoadAccounts:
+                    Type: Api
+                    Properties:
+                        Path: /accounts
+                        Method: POST
+                        RestApiId:
+                            Ref: BudGetApi
+                GetBalanceHistory:
+                    Type: Api
+                    Properties:
+                        Path: /balanceHistory
+                        Method: GET
+                        RestApiId:
+                            Ref: BudGetApi
+                CreateBalanceHistory:
+                    Type: Api
+                    Properties:
+                        Path: /balanceHistory
+                        Method: POST
+                        RestApiId:
+                            Ref: BudGetApi
+                UpdateBalanceHistory:
+                    Type: Api
+                    Properties:
+                        Path: /balanceHistory
+                        Method: PUT
+                        RestApiId:
+                            Ref: BudGetApi
+                DeleteBalanceHistory:
+                    Type: Api
+                    Properties:
+                        Path: /balanceHistory
+                        Method: DELETE
+                        RestApiId:
+                            Ref: BudGetApi
+                GetAllBalanceHistorys:
+                    Type: Api
+                    Properties:
+                        Path: /balanceHistorys
+                        Method: GET
+                        RestApiId:
+                            Ref: BudGetApi
+                LoadBalanceHistorys:
+                    Type: Api
+                    Properties:
+                        Path: /balanceHistorys
+                        Method: POST
+                        RestApiId:
+                            Ref: BudGetApi
+                GetMonthlyBudget:
+                    Type: Api
+                    Properties:
+                        Path: /monthlyBudget
+                        Method: GET
+                        RestApiId:
+                            Ref: BudGetApi
+                CreateMonthlyBudget:
+                    Type: Api
+                    Properties:
+                        Path: /monthlyBudget
+                        Method: POST
+                        RestApiId:
+                            Ref: BudGetApi
+                UpdateMonthlyBudget:
+                    Type: Api
+                    Properties:
+                        Path: /monthlyBudget
+                        Method: PUT
+                        RestApiId:
+                            Ref: BudGetApi
+                DeleteMonthlyBudget:
+                    Type: Api
+                    Properties:
+                        Path: /monthlyBudget
+                        Method: DELETE
+                        RestApiId:
+                            Ref: BudGetApi
+                GetAllMonthlyBudgets:
+                    Type: Api
+                    Properties:
+                        Path: /monthlyBudgets
+                        Method: GET
+                        RestApiId:
+                            Ref: BudGetApi
+                LoadMonthlyBudgets:
+                    Type: Api
+                    Properties:
+                        Path: /monthlyBudgets
+                        Method: POST
+                        RestApiId:
+                            Ref: BudGetApi
+                GetRecurringTransaction:
+                    Type: Api
+                    Properties:
+                        Path: /recurringTransaction
+                        Method: GET
+                        RestApiId:
+                            Ref: BudGetApi
+                CreateRecurringTransaction:
+                    Type: Api
+                    Properties:
+                        Path: /recurringTransaction
+                        Method: POST
+                        RestApiId:
+                            Ref: BudGetApi
+                UpdateRecurringTransaction:
+                    Type: Api
+                    Properties:
+                        Path: /recurringTransaction
+                        Method: PUT
+                        RestApiId:
+                            Ref: BudGetApi
+                DeleteRecurringTransaction:
+                    Type: Api
+                    Properties:
+                        Path: /recurringTransaction
+                        Method: DELETE
+                        RestApiId:
+                            Ref: BudGetApi
+                GetAllRecurringTransactions:
+                    Type: Api
+                    Properties:
+                        Path: /recurringTransactions
+                        Method: GET
+                        RestApiId:
+                            Ref: BudGetApi
+                LoadRecurringTransactions:
+                    Type: Api
+                    Properties:
+                        Path: /recurringTransactions
+                        Method: POST
+                        RestApiId:
+                            Ref: BudGetApi
+                GetConfig:
+                    Type: Api
+                    Properties:
+                        Path: /config
+                        Method: GET
+                        RestApiId:
+                            Ref: BudGetApi
+                CreateConfig:
+                    Type: Api
+                    Properties:
+                        Path: /config
+                        Method: POST
+                        RestApiId:
+                            Ref: BudGetApi
+                UpdateConfig:
+                    Type: Api
+                    Properties:
+                        Path: /config
+                        Method: PUT
+                        RestApiId:
+                            Ref: BudGetApi
+                DeleteConfig:
+                    Type: Api
+                    Properties:
+                        Path: /config
+                        Method: DELETE
+                        RestApiId:
+                            Ref: BudGetApi
+                GetAllConfigs:
+                    Type: Api
+                    Properties:
+                        Path: /configs
+                        Method: GET
+                        RestApiId:
+                            Ref: BudGetApi
+                LoadConfigs:
+                    Type: Api
+                    Properties:
+                        Path: /configs
+                        Method: POST
+                        RestApiId:
+                            Ref: BudGetApi
             Environment:
                 Variables:
                     POWERTOOLS_SERVICE_NAME: PowertoolsBudGet
@@ -86,7 +296,6 @@ Resources:
                     BalanceHistoryTable: !Ref BalanceHistory
                     MonthlyBudgetTable: !Ref MonthlyBudget
                     RecurringTransactionsTable: !Ref RecurringTransactions
-                    HolidaysTable: !Ref Holidays
                     ConfigTable: !Ref Config
     AllTransactions:
         Type: AWS::DynamoDB::Table
@@ -159,19 +368,6 @@ Resources:
                   AttributeName: "id"
                   KeyType: "HASH"
             BillingMode: PAY_PER_REQUEST
-    Holidays:
-        Type: AWS::DynamoDB::Table
-        Properties:
-            TableName: "holidays"
-            AttributeDefinitions:
-                - 
-                  AttributeName: "date"
-                  AttributeType: "S"
-            KeySchema:
-                - 
-                  AttributeName: "date"
-                  KeyType: "HASH"
-            BillingMode: PAY_PER_REQUEST
     Config:
         Type: AWS::DynamoDB::Table
         Properties:
@@ -205,10 +401,6 @@ Outputs:
     RecurringTransactionsDynamoDbTable:
         Value: !Ref RecurringTransactions
         Description: "RecurringTransactions DynamoDb Table"
-
-    HolidaysDynamoDbTable:
-        Value: !Ref Holidays
-        Description: "Holidays DynamoDb Table"
       
     ConfigDynamoDbTable:
         Value: !Ref Config
